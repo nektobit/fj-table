@@ -1,33 +1,80 @@
 import {Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'lib-fj-table',
   template: `
-    <table *ngIf="data" class="fjt" (contextmenu)="onrightClick($event)" #fjt>
-      <ng-container *ngIf="nestedHeaders">
-        <thead>
-            <tr *ngFor="let tr of nestedHeaders">
-              <ng-container *ngFor="let th of tr">
-                <ng-container *ngIf='isObj(th); else simpleTH'>
-                  <th [colSpan]="th?.colspan">{{ th.label }}</th>
-                </ng-container>
-                <ng-template #simpleTH>
-                  <th>{{ th }}</th>
-                </ng-template>
-              </ng-container>
+    <table *ngIf="data" class="fjt" [ngClass]="{ nestedRows: nestedRows }" (contextmenu)="onrightClick($event)" #fjt>
+      <thead>
+          <ng-container *ngIf="colHeaders">
+            <tr>
+              <th *ngFor="let th of colHeaders">{{ th }}</th>
             </tr>
-        </thead>
-      </ng-container>
+          </ng-container>
+          <ng-container *ngIf="nestedHeaders">
+            <tr *ngFor="let tr of nestedHeaders">
+              <th *ngFor="let th of tr" [colSpan]="th?.colspan">
+                {{ th.label || th }}
+              </th>
+            </tr>
+          </ng-container>
+      </thead>
       <colgroup>
-        <col style="width: 3.13rem" *ngFor="let col of data[0]">
+        <ng-container *ngIf="colHeaders">
+          <col style="width: 3.13rem" *ngFor="let col of colHeaders">
+        </ng-container>
       </colgroup>
       <tbody>
-        <!-- ROW -->
-        <tr *ngFor="let row of data">
-          <td *ngFor="let cell of row">
-            {{ cell }}
-          </td>
-        </tr>
+        <!-- NESTED ROW -->
+        <ng-container *ngIf="nestedRows; else simpleRow">
+          <ng-container *ngFor="let row of data">
+            <tr class="fjt-parent-row" [ngClass]="{'closed': !row.__showChild}">
+              <!-- PARENT -->
+              <ng-container *ngFor="let td of row | keyvalue: onCompare">
+                <td  *ngIf="td.key !== '__children' && td.key !== '__showChild'">
+                  <ng-container *ngIf="isNumber(td.value); else stringTD">
+                    {{td.value  | number: '1.2-2' }}
+                  </ng-container>
+                  <ng-template #stringTD>
+                    {{ td.value }}
+                  </ng-template>
+                  <ng-container *ngIf="colSuffix">
+                    {{ colSuffix[td.key] }}
+                  </ng-container>
+                </td>
+              </ng-container>
+              <button class="fjt-row-toggle" #rowToggle (click)="row.__showChild = !row.__showChild">
+                <ng-container *ngIf="row.__showChild; else altToggleValue">-</ng-container>
+                <ng-template #altToggleValue>+</ng-template>
+              </button>
+            </tr>
+            <!-- CHILDREN -->
+            <ng-container *ngFor="let childRow of row.__children">
+              <tr class="fjt-child-row" [hidden]="!row.__showChild">
+                <td *ngFor="let td of childRow | keyvalue: onCompare; let i = index">
+                  <ng-container *ngIf="isNumber(td.value); else stringTD">
+                    {{td.value  | number: '1.2-2' }}
+                  </ng-container>
+                  <ng-template #stringTD>
+                    {{ td.value }}
+                  </ng-template>
+                  <ng-container *ngIf="td.value && colSuffix">
+                    {{ colSuffix[td.key] }}
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <!-- SIMPLE ROW -->
+        <ng-template #simpleRow>
+          <tr *ngFor="let row of data">
+            <td *ngFor="let cell of row">
+              {{ cell }}
+            </td>
+          </tr>
+        </ng-template>
         <!-- -->
       </tbody>
     </table>
@@ -42,9 +89,20 @@ import {Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/co
 })
 export class FjTableComponent {
   @ViewChild('fjt') fjtElement: ElementRef | undefined;
-  @Input() data: any[][] | undefined;
+  @Input() data: any;// any[][] | undefined;
   @Input() nestedHeaders: any | undefined;
-  isObj(val: any): boolean { return typeof val === 'object'; }
+  @Input() colHeaders: any | undefined;
+  @Input() nestedRows: boolean | undefined;
+  @Input() colSuffix: any | undefined;
+
+  public onCompare(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
+    return 1;
+  }
+  public isNumber(value: any)
+  {
+    return typeof value === 'number' && isFinite(value);
+  }
+
   /* Context menu */
     contextmenu = false;
     contextmenuX = 0;
