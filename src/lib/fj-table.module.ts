@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FjTableComponent } from './fj-table.component';
-import {JsonPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
+import {DecimalPipe, JsonPipe, KeyValuePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 
 
 
@@ -12,7 +12,10 @@ import {JsonPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
     JsonPipe,
     NgIf,
     NgForOf,
-    NgStyle
+    NgStyle,
+    KeyValuePipe,
+    NgClass,
+    DecimalPipe
   ],
   exports: [
     FjTableComponent
