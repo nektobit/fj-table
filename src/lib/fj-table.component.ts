@@ -33,14 +33,12 @@ import {KeyValue} from "@angular/common";
               <ng-container *ngFor="let td of row | keyvalue: onCompare">
                 <td  *ngIf="td.key !== '__children' && td.key !== '__showChild'">
                   <ng-container *ngIf="isNumber(td.value); else stringTD">
-                    {{td.value  | number: '1.2-2' }}
+                    <!-- Remove this hack -->
+                    {{ hackNumber(td.value, colSuffix[td.key]) }}
                   </ng-container>
                   <ng-template #stringTD>
                     {{ td.value }}
                   </ng-template>
-                  <ng-container *ngIf="colSuffix">
-                    {{ colSuffix[td.key] }}
-                  </ng-container>
                 </td>
               </ng-container>
               <button class="fjt-row-toggle" #rowToggle (click)="row.__showChild = !row.__showChild">
@@ -53,14 +51,13 @@ import {KeyValue} from "@angular/common";
               <tr class="fjt-child-row" [hidden]="!row.__showChild">
                 <td *ngFor="let td of childRow | keyvalue: onCompare; let i = index">
                   <ng-container *ngIf="isNumber(td.value); else stringTD">
-                    {{td.value  | number: '1.2-2' }}
+                    <!-- Remove this hack -->
+                    {{ hackNumber(td.value, colSuffix[td.key])  }}
                   </ng-container>
+
                   <ng-template #stringTD>
                     {{ td.value }}
                   </ng-template>
-                  <ng-container *ngIf="td.value && colSuffix">
-                    {{ colSuffix[td.key] }}
-                  </ng-container>
                 </td>
               </tr>
             </ng-container>
@@ -121,6 +118,16 @@ export class FjTableComponent {
       this.contextmenu= false;
     }
   /* */
+
+  /* HACK */
+  hackNumber(n:any, suffix:any) {
+    if(suffix && n) {
+      return n.toFixed(6).replace(".", ",") + suffix;
+    }
+    if(n) {
+      return n.toFixed(2).replace(".", ",");
+    }
+  }
 
   copyTable() {
     let table = this.fjtElement?.nativeElement;
