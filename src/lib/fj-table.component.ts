@@ -1,5 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {KeyValue} from "@angular/common";
+import {DetailedSettings} from "../models/GridSettings";
 
 @Component({
   selector: 'lib-fj-table',
@@ -9,7 +10,7 @@ import {KeyValue} from "@angular/common";
 export class FjTableComponent {
   @ViewChild('fjt') fjtElement: ElementRef | undefined;
   @Input() data: any;
-  @Input() nestedHeaders: any | undefined;
+  @Input() nestedHeaders: boolean | Array<Array<string | DetailedSettings>> | undefined;
   @Input() colHeaders: any | undefined;
   @Input() nestedRows: boolean | undefined;
   @Input() colSuffix: any | undefined;
