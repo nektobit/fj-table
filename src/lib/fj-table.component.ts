@@ -10,7 +10,7 @@ import {DetailedSettings} from "../models/GridSettings";
 export class FjTableComponent {
   @ViewChild('fjt') fjtElement: ElementRef | undefined;
   @Input() data: any;
-  @Input() nestedHeaders: boolean | Array<Array<string | DetailedSettings>> | undefined;
+  @Input() nestedHeaders: any | undefined;
   @Input() colHeaders: any | undefined;
   @Input() nestedRows: boolean | undefined;
   @Input() colSuffix: any | undefined;
@@ -45,10 +45,10 @@ export class FjTableComponent {
   /* HACK */
   hackNumber(n: any, suffix: any) {
     if (suffix && n) {
-      return n.toFixed(6).replace(".", ",") + suffix;
+      return n.toLocaleString('ru', {maximumFractionDigits: 6}) + suffix;
     }
     if (n) {
-      return n.toFixed(2).replace(".", ",");
+      return n.toLocaleString('ru', {maximumFractionDigits: 2})
     }
   }
 
