@@ -73,5 +73,6 @@
 <div *ngIf="contextmenu" class="context-menu-wrapper" (click)="disableContextMenu()">
   <div class="context-menu" [ngStyle]="{'left.px': contextmenuX, 'top.px': contextmenuY}">
     <button (click)="copyTable(); disableContextMenu()">Скопировать всю таблицу</button>
+    <button (click)="exportToExcel(); disableContextMenu()">Экспорт в Excel</button>
   </div>
 </div>
