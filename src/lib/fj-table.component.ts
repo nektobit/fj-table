@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {KeyValue} from "@angular/common";
 import {DetailedSettings} from "../models/GridSettings";
+import {defaultNumberOptions, FjTableOptions} from "../models/FjTableOptions";
 
 @Component({
   selector: 'lib-fj-table',
@@ -10,10 +11,16 @@ import {DetailedSettings} from "../models/GridSettings";
 export class FjTableComponent {
   @ViewChild('fjt') fjtElement: ElementRef | undefined;
   @Input() data: any;
-  @Input() nestedHeaders: any | undefined;
-  @Input() colHeaders: any | undefined;
-  @Input() nestedRows: boolean | undefined;
-  @Input() colSuffix: any | undefined;
+
+  @Input() options: FjTableOptions = {
+    colHeaders: undefined,
+    nestedRows: undefined,
+    nestedHeaders: undefined,
+
+    numberOptions: defaultNumberOptions,
+  };
+
+
 
   public onCompare(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
     return 1;
