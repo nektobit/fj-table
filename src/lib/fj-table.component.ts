@@ -49,16 +49,6 @@ export class FjTableComponent {
     this.contextmenu = false;
   }
 
-  /* HACK */
-  hackNumber(n: any, suffix: any) {
-    if (suffix && n) {
-      return n.toLocaleString('ru', {maximumFractionDigits: 6}) + suffix;
-    }
-    if (n) {
-      return n.toLocaleString('ru', {maximumFractionDigits: 2})
-    }
-  }
-
   copyTable() {
     let table = this.fjtElement?.nativeElement;
 

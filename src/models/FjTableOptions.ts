@@ -1,4 +1,3 @@
-import {Input} from "@angular/core";
 
 function filter(value: number, suffix: string): string{
   return value.toString() + suffix;
@@ -6,7 +5,7 @@ function filter(value: number, suffix: string): string{
 
 export const defaultNumberOptions: NumberOptions = {
   colSuffix: '',
-  filter: (value, suffix='') => value.toString() + suffix,
+  changeValue: (value, suffix='') => value.toString() + suffix,
 }
 
 export interface FjTableOptions{
@@ -18,6 +17,6 @@ export interface FjTableOptions{
 }
 
 export interface NumberOptions{
-  filter: (value: number, suffix: string) => string;
+  changeValue: (value: number, suffix: string) => string;
   colSuffix: any | undefined;
 }

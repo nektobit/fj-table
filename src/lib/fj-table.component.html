@@ -27,12 +27,7 @@
         <ng-container *ngFor="let td of row | keyvalue: onCompare">
           <td  *ngIf="td.key !== '__children' && td.key !== '__showChild'">
             <ng-container *ngIf="isNumber(td.value); else stringTD">
-              <!-- Remove this hack -->
-              {{options.numberOptions.filter(td.value, options.numberOptions.colSuffix) }}
-
-<!--
-              {{ hackNumber(td.value, options.colSuffix[td.key]) }}
--->
+              {{options.numberOptions.changeValue(td.value, options.numberOptions.colSuffix) }}
             </ng-container>
             <ng-template #stringTD>
               {{ td.value }}
@@ -49,9 +44,7 @@
         <tr class="fjt-child-row" [hidden]="!row.__showChild">
           <td *ngFor="let td of childRow | keyvalue: onCompare; let i = index">
             <ng-container *ngIf="isNumber(td.value); else stringTD">
-              <!-- Remove this hack -->
-              {{options.numberOptions.filter(td.value, options.numberOptions.colSuffix) }}
-              <!--{{ hackNumber(td.value, options.numberOptions?.colSuffix[td.key])  }}-->
+              {{options.numberOptions.changeValue(td.value, options.numberOptions.colSuffix) }}
             </ng-container>
 
             <ng-template #stringTD>
