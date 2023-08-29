@@ -10,6 +10,7 @@ import {defaultNumberOptions, FjTableOptions} from "../models/FjTableOptions";
 export class FjTableComponent {
   @ViewChild('fjt') fjtElement: ElementRef | undefined;
   @Input() data: any;
+  @Input() colSuffix: any | undefined;
 
   @Input() options: FjTableOptions = {
     colHeaders: undefined,

@@ -4,7 +4,6 @@ function filter(value: number, suffix: string): string{
 }
 
 export const defaultNumberOptions: NumberOptions = {
-  colSuffix: '',
   changeValue: (value, suffix='') => value.toString() + suffix,
 }
 
@@ -18,5 +17,4 @@ export interface FjTableOptions{
 
 export interface NumberOptions{
   changeValue: (value: number, suffix: string) => string;
-  colSuffix: any | undefined;
 }
