@@ -60,7 +60,7 @@
   <ng-template #simpleRow>
     <tr *ngFor="let row of data">
       <td *ngFor="let cell of row">
-        {{ cell }}
+        {{options.numberOptions.changeValue(cell, '')}}
       </td>
     </tr>
   </ng-template>

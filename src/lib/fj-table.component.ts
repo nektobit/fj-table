@@ -1,6 +1,5 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {KeyValue} from "@angular/common";
-import {DetailedSettings} from "../models/GridSettings";
 import {defaultNumberOptions, FjTableOptions} from "../models/FjTableOptions";
 
 @Component({
